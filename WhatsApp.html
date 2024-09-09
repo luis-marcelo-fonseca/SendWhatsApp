@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Envio de Mensagens via WhatsApp</title>
+    <style>
+        /* Reset básico */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h2 {
+            text-align: center;
+            color: #128C7E;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        label {
+            color: #128C7E;
+            font-weight: bold;
+            font-size: 1rem;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        input, textarea, button {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        input:focus, textarea:focus, button:focus {
+            outline: none;
+            border-color: #25D366;
+        }
+
+        button {
+            background-color: #25D366;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            border: none;
+        }
+
+        button:hover {
+            background-color: #128C7E;
+        }
+
+        /* Estilo responsivo */
+        @media (max-width: 768px) {
+            .container {
+                max-width: 100%;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            label, input, textarea, button {
+                font-size: 0.9rem;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Envie uma mensagem pelo WhatsApp</h2>
+
+        <!-- Input para número de telefone -->
+        <label for="phone">Número de telefone com DDD:</label>
+        <input type="text" id="phone" placeholder="Ex: 5511999999999" required>
+
+        <!-- Área de texto para a mensagem -->
+        <label for="message">Mensagem:</label>
+        <textarea id="message" rows="5" placeholder="Escreva sua mensagem aqui..." required></textarea>
+
+        <!-- Botão para enviar -->
+        <button id="sendBtn">Enviar pelo WhatsApp</button>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const messageInput = document.getElementById("message");
+            const sendBtn = document.getElementById("sendBtn");
+
+            // Carregar mensagem salva do localStorage ao abrir a página
+            const savedMessage = localStorage.getItem("whatsappMessage");
+            if (savedMessage) {
+                messageInput.value = savedMessage;
+            }
+
+            // Função para enviar a mensagem pelo WhatsApp
+            sendBtn.addEventListener("click", function () {
+                const phone = document.getElementById("phone").value;
+                const message = messageInput.value;
+
+                if (phone && message) {
+                    // Salvar a mensagem no localStorage
+                    localStorage.setItem("whatsappMessage", message);
+
+                    // Redirecionar para o link do WhatsApp
+                    const whatsappURL = `https://api.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(message)}`;
+                    window.open(whatsappURL, '_blank');
+                } else {
+                    alert("Por favor, preencha todos os campos.");
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
